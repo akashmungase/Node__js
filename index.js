@@ -1,10 +1,16 @@
+// const http = require('http');
+// const server = http.createServer((req, res) => {
+//     res.write('Hello, World!');
+//     res.end();
+// });
+// server.listen(3000, () => console.log('Server running on port 3000'));
+
 // const calculator = require('./calculation');
 
 // console.log('addition', calculator.add(4, 5));
 // console.log('Multiplication', calculator.multiply(4, 5));
 // console.log('Subtraction', calculator.subtraction(40, 5));
 // console.log('divide', calculator.divide(40, 5));
-
 
 
 // create file and remove files
@@ -22,9 +28,9 @@
 
 // create multiple file and remove files
 
-const fs = require('fs');
-const path = require('path');
-const dirPath = path.join(__dirname, 'files');
+// const fs = require('fs');
+// const path = require('path');
+// const dirPath = path.join(__dirname, 'files');
 
 // for (let i = 0; i < 5; i++) {
 //     fs.writeFileSync(`${dirPath}/hello${i}.txt`, 'text file');
@@ -35,3 +41,36 @@ const dirPath = path.join(__dirname, 'files');
 //         console.log('file name is',item);
 //     })
 // })
+
+
+// Express.js
+
+// const express = require('express');
+// const app = express();
+
+// app.get('', (req, res) => {
+//     res.send('This is Home Page');
+// })
+
+// app.get('/about', (req, res) => {
+//     // res.send(
+//     //     `<h1>About Page</h1>`
+//     // );
+
+//     res.send(
+//         `<input type="text" placeholder="name" value="${req.query.name}"/>
+//         <button> Click Me </button>`
+//     );
+// })
+
+// app.listen(3000);
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const publicPath = path.join(__dirname, 'public');
+
+app.use(express.static(publicPath));
+app.listen(3000);
