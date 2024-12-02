@@ -143,34 +143,55 @@
 // 2. Route level middleware
 // It is apply for one or more routes or group of routes
 
-const express = require('express');
-const app = express();
-const reqFilter = require('./middleware');
+// const express = require('express');
+// const app = express();
+// const reqFilter = require('./middleware');
 
-app.get('/', (req, res) => {
-    res.send('Welcome to Home Page')
-})
+// app.get('/', (req, res) => {
+//     res.send('Welcome to Home Page')
+// })
 
-app.get('/profile', reqFilter, (req, res) => {
-    res.send('Welcome to profile Page')
-})
+// app.get('/profile', reqFilter, (req, res) => {
+//     res.send('Welcome to profile Page')
+// })
 
-app.get('/login', reqFilter, (req, res) => {
-    res.send('Welcome to login Page')
-})
+// app.get('/login', reqFilter, (req, res) => {
+//     res.send('Welcome to login Page')
+// })
 
-// group route
-const route = express.Router();
-app.use(reqFilter);
+// // group route
+// const route = express.Router();
+// app.use(reqFilter);
 
-route.get('/user', (req, res) => {
-    res.send('Welcome to user Page')
-})
+// route.get('/user', (req, res) => {
+//     res.send('Welcome to user Page')
+// })
 
-route.get('/contact', (req, res) => {
-    res.send('Welcome to contact Page')
-})
+// route.get('/contact', (req, res) => {
+//     res.send('Welcome to contact Page')
+// })
 
-app.use('/', route);
+// app.use('/', route);
 
-app.listen(8000)
+// app.listen(8000)
+
+
+
+/*
+* MongoDB Connection
+*/
+
+const { MongoClient } = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const database = 'e-commerce';
+const client = new MongoClient(url);
+
+async function getData() {
+    let result = await client.connect();
+    let db = result.db(database);
+    let collection = db.collection('product');
+    let response = await collection.find({}).toArray();
+    console.log('response', response);
+}
+
+getData();
