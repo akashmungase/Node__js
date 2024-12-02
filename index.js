@@ -66,13 +66,13 @@
 // app.listen(3000);
 
 
-const express = require('express');
-const path = require('path');
+// const express = require('express');
+// const path = require('path');
 
-const app = express();
-const publicPath = path.join(__dirname, 'public');
+// const app = express();
+// const publicPath = path.join(__dirname, 'public');
 
-// app.use(express.static(publicPath));
+// // app.use(express.static(publicPath));
 
 // app.get('', (req, res) => {
 //     res.sendFile(`${publicPath}/index.html`)
@@ -86,23 +86,91 @@ const publicPath = path.join(__dirname, 'public');
 //     res.sendFile(`${publicPath}/contact.html`)
 // })
 
-// app.get('*', (req, res) => {
-//     res.sendFile(`${publicPath}/404.html`)
+// app.set('view engine', 'ejs')
+
+// app.get('/profile', (req, res) => {
+//     const user = {
+//         name: 'Akash',
+//         email: 'akashmungase@test.com',
+//         skills: ['HTML', 'CSS', 'Bootstrap', 'JavaScript']
+//     }
+//     res.render('profile', {user})
 // })
 
-app.set('view engine', 'ejs')
+// app.get('/login', (req, res) => {
+//     res.render('login')
+// })
+// app.listen(8000);
 
-app.get('/profile', (req, res) => {
-    const user = {
-        name: 'Akash',
-        email: 'akashmungase@test.com',
-        skills: ['HTML', 'CSS', 'Bootstrap', 'JavaScript']
-    }
-    res.render('profile', {user})
+
+
+/**
+ *  Middleware
+ **/
+
+// 1. Application level middleware
+// It is apply for all routes of application
+
+// const express = require('express');
+// const app = express();
+
+// const reqFilter = (req, res, next) => {
+//     if (!req.query.age) {
+//         res.send('Please Provide age')
+//     }
+//     else if (req.query.age < 18) {
+//         res.send('You can not access this page')
+//     }
+//     else {
+//         next();
+//     }
+// }
+
+// app.use(reqFilter)
+
+// app.get('/', (req, res) => {
+//     res.send('Welcome to Home Page')
+// })
+
+// app.get('/profile', (req, res) => {
+//     res.send('Welcome to Home Page')
+// })
+
+// app.listen(8000);
+
+
+
+// 2. Route level middleware
+// It is apply for one or more routes or group of routes
+
+const express = require('express');
+const app = express();
+const reqFilter = require('./middleware');
+
+app.get('/', (req, res) => {
+    res.send('Welcome to Home Page')
 })
 
-app.get('/login', (req, res) => {
-    res.render('login')
+app.get('/profile', reqFilter, (req, res) => {
+    res.send('Welcome to profile Page')
 })
 
-app.listen(8000);
+app.get('/login', reqFilter, (req, res) => {
+    res.send('Welcome to login Page')
+})
+
+// group route
+const route = express.Router();
+app.use(reqFilter);
+
+route.get('/user', (req, res) => {
+    res.send('Welcome to user Page')
+})
+
+route.get('/contact', (req, res) => {
+    res.send('Welcome to contact Page')
+})
+
+app.use('/', route);
+
+app.listen(8000)
