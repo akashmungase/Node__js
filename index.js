@@ -181,17 +181,28 @@
 * MongoDB Connection
 */
 
-const { MongoClient } = require('mongodb');
-const url = 'mongodb://localhost:27017';
-const database = 'e-commerce';
-const client = new MongoClient(url);
+// const { MongoClient } = require('mongodb');
+// const url = 'mongodb://localhost:27017';
+// const database = 'e-commerce';
+// const client = new MongoClient(url);
 
-async function getData() {
-    let result = await client.connect();
-    let db = result.db(database);
-    let collection = db.collection('product');
-    let response = await collection.find({}).toArray();
-    console.log('response', response);
+// async function getData() {
+//     let result = await client.connect();
+//     let db = result.db(database);
+//     let collection = db.collection('product');
+//     let response = await collection.find({}).toArray();
+//     console.log('response', response);
+// }
+
+// getData();
+
+const dbConection = require('./mongodb');
+
+const main = async () => {
+   let data = await dbConection();
+   let result = await data.find().toArray();
+   console.log('result', result);
+   
 }
 
-getData();
+main();
