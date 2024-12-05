@@ -196,13 +196,61 @@
 
 // getData();
 
-const dbConection = require('./mongodb');
+// const dbConection = require('./mongodb');
 
-const main = async () => {
-   let data = await dbConection();
-   let result = await data.find().toArray();
-   console.log('result', result);
+// const main = async () => {
+//    let data = await dbConection();
+//    let result = await data.find().toArray();
+//    console.log('result', result);
    
+// }
+
+// main();
+
+
+
+/*
+* Mongoose Connection
+*/
+
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/e-commerce')
+
+const productSchema = new mongoose.Schema({
+   name: String,
+   price: Number,
+   category: String
+})
+const productModel = mongoose.model('products', productSchema)
+
+const saveInDB = async () => {
+   let data = new productModel({name: 'M 15', price: 19999, category: "mobile"});
+   let result = await data.save();
+   console.log('result', result);
 }
 
-main();
+// saveInDB();
+
+const updateInDB = async () => {
+   let data = await productModel.updateOne(
+      {name: "M 15"}, {$set: {price: 18555}}
+   );
+   console.log('data', data);
+}
+
+// updateInDB();
+
+const deleteInDB = async () => {
+   let data = await productModel.deleteOne({name: "M 15"});
+   console.log('data', data);
+}
+
+// deleteInDB();
+
+const findInDB = async () => {
+   let data = await productModel.find({name: "M1"});
+   console.log('data', data);
+}
+
+findInDB();
