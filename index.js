@@ -52,4 +52,26 @@ app.get('/search/:key', async (req, res) => {
     res.send(data);
 })
 
+
+// file upload
+
+const multer = require('multer');
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, res, cb) {
+            cb(null, "uploads"); // cb - call back unction, second parameter folder name you want to store in folder
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+        }
+    })
+}).single("document");
+
+// upload use as middleware in function
+
+app.post('/upload', upload, async (req, res) => {
+    res.send('File Uploaded Successfully');
+})
+
 app.listen(8000);
